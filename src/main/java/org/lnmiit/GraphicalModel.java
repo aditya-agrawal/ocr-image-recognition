@@ -1,6 +1,9 @@
 package org.lnmiit;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Vector;
 
 
 public class GraphicalModel {
@@ -143,19 +146,30 @@ public class GraphicalModel {
 
 			//TRIANGULATION
 			doTriangulation(small_images, graph, i, t, vertices);
-
-
+            int[][] matrix = GraphMatrix.getGraphmatrix(graph[i]);
+            Set<Set<Integer>> clusters = getClusterGraph(matrix);
+            System.out.println(clusters);
 		}
-
-		System.out.println("" + graph[0].getVertex("0"));
-		System.out.println("" + graph[0].getVertex("1"));
-		System.out.println("Graph Contains {1, 2}: " +
-                graph[64].containsEdge(new Edge(graph[64].getVertex("2"), graph[64].getVertex("11"))));
-
 
     }
 
-	private static void doTriangulation(int[][] small_images, Graph[] graph, int i, int t, Vertex[] vertices) {
+    private static Set<Set<Integer>> getClusterGraph(int[][] matrix) {
+        Clique clique = new Clique(10+"",2);
+        clique.setGraph(matrix);
+        Set<Set<Integer>> result1 = new HashSet<>();
+        clique.doCliqueBT(new Vector(),0,result1);
+
+        clique = new Clique(10+"",3);
+        clique.setGraph(matrix);
+        Set<Set<Integer>> result2 = new HashSet<>();
+        clique.doCliqueBT(new Vector(),0,result2);
+
+        result1.addAll(result2);
+
+        return result1;
+    }
+
+    private static void doTriangulation(int[][] small_images, Graph[] graph, int i, int t, Vertex[] vertices) {
 		for(int j=0;j<t;j++)
         {
             for(int k=j+1;k<t;k++)
@@ -307,8 +321,8 @@ public class GraphicalModel {
                     }
                 }
 
-
             }
+
         }
 	}
 }
