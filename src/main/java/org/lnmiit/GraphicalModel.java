@@ -1,9 +1,7 @@
 package org.lnmiit;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 
 
 public class GraphicalModel {
@@ -24,7 +22,8 @@ public class GraphicalModel {
 
 
 		Graph[] graph= new Graph[numlines];
-
+		ArrayList<Set<Set<Integer>>> clusters = new ArrayList<>();
+		ArrayList<JunctionGraph> junctionGraph = new ArrayList<>();
 		//Creating Vertices
 		for(int i=0;i<numlines;i++)
 		{
@@ -145,11 +144,21 @@ public class GraphicalModel {
 			}
 
 			//TRIANGULATION
-			doTriangulation(small_images, graph, i, t, vertices);
+
+			Trangulation.doTriangulation(small_images, graph, i, t, vertices);
             int[][] matrix = GraphMatrix.getGraphmatrix(graph[i]);
-            Set<Set<Integer>> clusters = getClusterGraph(matrix);
-            System.out.println(clusters);
+            clusters.add(getClusterGraph(matrix));
+			junctionGraph.add(new JunctionGraph(clusters.get(i)));
 		}
+
+
+		System.out.println(junctionGraph.get(0));
+		//System.out.println("***" + graph[0].getEdges());
+		//System.out.print(graph[0].containsEdge(new Edge(new Vertex(""+1),new Vertex(""+5))));
+	/**	int[][] matrix = GraphMatrix.getGraphmatrix(graph[0]);
+		clusters = getClusterGraph(matrix);
+		System.out.println(clusters);
+		JunctionGraph junctionGraph = new JunctionGraph(clusters);*/
 
     }
 
@@ -164,167 +173,36 @@ public class GraphicalModel {
         Set<Set<Integer>> result2 = new HashSet<>();
         clique.doCliqueBT(new Vector(),0,result2);
 
+        result1 = removeSubsets(result2,result1);
         result1.addAll(result2);
 
         return result1;
     }
 
-    private static void doTriangulation(int[][] small_images, Graph[] graph, int i, int t, Vertex[] vertices) {
-		for(int j=0;j<t;j++)
-        {
-            for(int k=j+1;k<t;k++)
-            {
-                if(j<strlengths[2*i])
-                {
-                    if(k<strlengths[2*i])
-                    {
-                        if(small_images[2*i][j]==small_images[2*i][k])
-                        {
-                            if((k-j)==3)
-                            {
-                                graph[i].addEdge(vertices[j], vertices[k-1]);
-                            }
+    private static Set<Set<Integer>> removeSubsets(Set<Set<Integer>> result2, Set<Set<Integer>> result1) {
 
-                            if((k-j)==4)
-                            {
-                                graph[i].addEdge(vertices[j], vertices[k-2]);
-                                graph[i].addEdge(vertices[k], vertices[k-2]);
-                            }
+        for(Set<Integer> clusterSize3 : result2){
+            List<Integer> clusterList = new ArrayList<>(clusterSize3);
+            clusterList.remove(0);
+            Set<Integer> subcluster = new HashSet(clusterList);
+            if(result1.contains(subcluster))
+                result1.remove(subcluster);
 
-                            if((k-j)==5)
-                            {
-                                graph[i].addEdge(vertices[j], vertices[j+2]);
-                                graph[i].addEdge(vertices[k], vertices[k-2]);
-                                graph[i].addEdge(vertices[j], vertices[k-2]);
-                            }
+            clusterList = new ArrayList<>(clusterSize3);
+            clusterList.remove(1);
+            subcluster = new HashSet(clusterList);
+            if(result1.contains(subcluster))
+                result1.remove(subcluster);
 
-
-
-                        }
-                    }
-                    else
-                    {
-                        if(small_images[2*i][j]==small_images[2*i+1][k-strlengths[2*i]])
-                        {
-                            int p;
-                            int q;
-                            for(p=j+1;p<strlengths[2*i];p++)
-                            {
-                                for(q=k+1;q<t;q++)
-                                {
-                                    if(small_images[2*i][p]==small_images[2*i+1][q-strlengths[2*i]])
-                                            {
-                                                if((p-j)+(q-k)==2)
-                                                {
-                                                    graph[i].addEdge(vertices[j], vertices[q]);
-                                                }
-                                                if((p-j)+(q-k)==3)
-                                                {
-                                                    if((p-j)>(q-k))
-                                                    {
-                                                        graph[i].addEdge(vertices[p-1], vertices[q]);
-                                                        graph[i].addEdge(vertices[j], vertices[q]);
-                                                    }
-                                                    else
-                                                    {
-                                                        graph[i].addEdge(vertices[p], vertices[q-1]);
-                                                        graph[i].addEdge(vertices[k], vertices[p]);
-                                                    }
-                                                }
-
-                                                if((p-j)+(q-k)==4)
-                                                {
-                                                    if((p-j)==(q-k))
-                                                    {
-                                                        graph[i].addEdge(vertices[j], vertices[k+1]);
-                                                        graph[i].addEdge(vertices[j+1], vertices[k+1]);
-                                                        graph[i].addEdge(vertices[j+2], vertices[k+1]);
-                                                    }
-                                                    if((p-j)<(q-k))
-                                                    {
-                                                        graph[i].addEdge(vertices[j+1], vertices[k]);
-                                                        graph[i].addEdge(vertices[j+1], vertices[k+2]);
-                                                        graph[i].addEdge(vertices[j+1], vertices[k+1]);
-                                                    }
-                                                    if((p-j)>(q-k))
-                                                    {
-                                                        graph[i].addEdge(vertices[k+1], vertices[j]);
-                                                        graph[i].addEdge(vertices[k+1], vertices[j+1]);
-                                                        graph[i].addEdge(vertices[k+1], vertices[j+2]);
-                                                    }
-
-                                                }
-                                                if((p-j)+(q-k)==5)
-                                                {
-                                                    if((p-j)==1)
-                                                    {
-                                                        graph[i].addEdge(vertices[j+1], vertices[k]);
-                                                        graph[i].addEdge(vertices[j+1], vertices[k+1]);
-                                                        graph[i].addEdge(vertices[j+1], vertices[k+2]);
-                                                        graph[i].addEdge(vertices[j+1], vertices[k+3]);
-                                                    }
-                                                    if((p-j)==4)
-                                                    {
-                                                        graph[i].addEdge(vertices[j], vertices[k+1]);
-                                                        graph[i].addEdge(vertices[j+2], vertices[k+1]);
-                                                        graph[i].addEdge(vertices[j+3], vertices[k+1]);
-                                                        graph[i].addEdge(vertices[j+4], vertices[k+1]);
-                                                    }
-                                                    if((p-j)==3)
-                                                    {
-                                                        graph[i].addEdge(vertices[j], vertices[k+1]);
-                                                        graph[i].addEdge(vertices[j+1], vertices[k+1]);
-                                                        graph[i].addEdge(vertices[j+2], vertices[k+1]);
-                                                        graph[i].addEdge(vertices[j+3], vertices[k+1]);
-                                                    }
-                                                    if((p-j)==2)
-                                                    {
-                                                        graph[i].addEdge(vertices[j+1], vertices[k]);
-                                                        graph[i].addEdge(vertices[j+1], vertices[k+1]);
-                                                        graph[i].addEdge(vertices[j+1], vertices[k+2]);
-                                                        graph[i].addEdge(vertices[j+1], vertices[k+3]);
-                                                    }
-
-                                                }
-
-                                            }
-                                }
-                            }
-
-                        }
-                    }
-                }
-                else
-                {
-                    if(k>strlengths[2*i])
-                    {
-                        if(small_images[2*i+1][j-strlengths[2*i]]==small_images[2*i][k-strlengths[2*i]])
-                        {
-                            if((k-j)==3)
-                            {
-                                graph[i].addEdge(vertices[j], vertices[k-1]);
-                            }
-
-                            if((k-j)==4)
-                            {
-                                graph[i].addEdge(vertices[j], vertices[k-2]);
-                                graph[i].addEdge(vertices[k], vertices[k-2]);
-                            }
-
-                            if((k-j)==5)
-                            {
-                                graph[i].addEdge(vertices[j], vertices[j+2]);
-                                graph[i].addEdge(vertices[k], vertices[k-2]);
-                                graph[i].addEdge(vertices[j], vertices[k-2]);
-                            }
-                        }
-                    }
-                }
-
-            }
-
+            clusterList = new ArrayList<>(clusterSize3);
+            clusterList.remove(2);
+            subcluster = new HashSet(clusterList);
+            if(result1.contains(subcluster))
+                result1.remove(subcluster);
         }
-	}
+
+        return result1;
+    }
 }
 
 		

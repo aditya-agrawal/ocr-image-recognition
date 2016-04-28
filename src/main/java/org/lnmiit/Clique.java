@@ -4,9 +4,9 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Class 'CliqueBT' finds the k-clique in a graph using backtracking method
- * @author Hyung-Joon Kim
+ * Created by aditya on 27/4/16.
  */
+
 public class Clique {
 
     private int [][] graph; // an adjacency edge matrix for a graph
@@ -198,7 +198,7 @@ public class Clique {
     /**
      * Top-level function which creates an instance of 'CliqueBT' class and
      * invokes its methods to find k-cliques in graphs.
-     * @param args strings of graph representation - total number of vertices
+     * strings of graph representation - total number of vertices
      *             followed by pairs of vertices which indicate edges.
      * @throws IOException
      */
