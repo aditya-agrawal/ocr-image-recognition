@@ -153,12 +153,12 @@ public class GraphicalModel {
 
 
 		System.out.println(junctionGraph.get(0));
-		//System.out.println("***" + graph[0].getEdges());
-		//System.out.print(graph[0].containsEdge(new Edge(new Vertex(""+1),new Vertex(""+5))));
-	/**	int[][] matrix = GraphMatrix.getGraphmatrix(graph[0]);
-		clusters = getClusterGraph(matrix);
-		System.out.println(clusters);
-		JunctionGraph junctionGraph = new JunctionGraph(clusters);*/
+
+		int[][] matrix = junctionGraph.get(0).toMatrix();
+
+		MST mst = new MST(junctionGraph.get(0).node.size());
+		ArrayList<JunctionGraphEdge> edges = mst.primMST(matrix);
+		System.out.println(edges);
 
     }
 

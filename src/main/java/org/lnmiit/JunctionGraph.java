@@ -50,4 +50,13 @@ public class JunctionGraph {
                 ", edge=" + edge +
                 '}';
     }
+
+    public int[][] toMatrix() {
+        int[][] matrix = new int[node.size()][node.size()];
+
+        edge.stream().forEach(e -> {matrix[e.v1][e.v2] = e.weight;
+            matrix[e.v2][e.v1] = e.weight; });
+
+        return matrix;
+    }
 }
