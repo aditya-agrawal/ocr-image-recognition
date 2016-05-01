@@ -24,6 +24,8 @@ public class GraphicalModel {
 		Graph[] graph= new Graph[numlines];
 		ArrayList<Set<Set<Integer>>> clusters = new ArrayList<>();
 		ArrayList<JunctionGraph> junctionGraph = new ArrayList<>();
+		ArrayList<JunctionGraph> junctionTree = new ArrayList<>();
+
 		//Creating Vertices
 		for(int i=0;i<numlines;i++)
 		{
@@ -56,92 +58,7 @@ public class GraphicalModel {
 
 			}
 			//Skip-Pair-&-Skip-Factor-Edges-&-Potentials
-			for(int j=0;j<t;j++)
-			{
-				for(int k=j+1;k<t;k++)
-				{
-					if(j<strlengths[2*i])
-					{
-						if(k<strlengths[2*i])
-						{
-							if(small_images[2*i][j]==small_images[2*i][k])
-							{
-								if(small_chars[2*i][j]==small_chars[2*i][k])
-								{
-									vertices[j].SkipPotential=5;
-									vertices[k].SkipPotential=5;
-									graph[i].addEdge(vertices[j], vertices[k]);
-								}
-								else
-								{
-									vertices[j].SkipPotential=1;
-									vertices[k].SkipPotential=1;
-									graph[i].addEdge(vertices[j], vertices[k]);
-								}
-							}
-						}
-						else
-						{
-							if(small_images[2*i][j]==small_images[2*i+1][k-strlengths[2*i]])
-							{
-								if(small_chars[2*i][j]==small_chars[2*i+1][k-strlengths[2*i]])
-								{
-									vertices[j].SkipPotential=5;
-									vertices[k].SkipPotential=5;
-									graph[i].addEdge(vertices[j], vertices[k]);
-								}
-								else
-								{
-									vertices[j].SkipPotential=1;
-									vertices[k].SkipPotential=1;
-									graph[i].addEdge(vertices[j], vertices[k]);
-								}
-							}
-						}
-					}
-					else
-					{
-						if(k<strlengths[2*i])
-						{
-							if(small_images[2*i+1][j-strlengths[2*i]]==small_images[2*i][k])
-							{
-								if(small_chars[2*i+1][j-strlengths[2*i]]==small_chars[2*i][k])
-								{
-									vertices[j].SkipPotential=5;
-									vertices[k].SkipPotential=5;
-									graph[i].addEdge(vertices[j], vertices[k]);
-								}
-								else
-								{
-									vertices[j].SkipPotential=1;
-									vertices[k].SkipPotential=1;
-									graph[i].addEdge(vertices[j], vertices[k]);
-								}
-							}
-						}
-						else
-						{
-							if(small_images[2*i+1][j-strlengths[2*i]]==small_images[2*i+1][k-strlengths[2*i]])
-							{
-								if(small_chars[2*i+1][j-strlengths[2*i]]==small_chars[2*i+1][k-strlengths[2*i]])
-								{
-									vertices[j].SkipPotential=5;
-									vertices[k].SkipPotential=5;
-									graph[i].addEdge(vertices[j], vertices[k]);
-								}
-								else
-								{
-									vertices[j].SkipPotential=1;
-									vertices[k].SkipPotential=1;
-									graph[i].addEdge(vertices[j], vertices[k]);
-								}
-							}
-						}
-					}
-
-
-				}
-			}
+			fillSkipPotentials(small_images, small_chars, graph, i, t, vertices);
 
 			//TRIANGULATION
 
@@ -149,20 +66,115 @@ public class GraphicalModel {
             int[][] matrix = GraphMatrix.getGraphmatrix(graph[i]);
             clusters.add(getClusterGraph(matrix));
 			junctionGraph.add(new JunctionGraph(clusters.get(i)));
+
+			matrix = junctionGraph.get(i).toMatrix();
+			MST mst = new MST(junctionGraph.get(i).node.size());
+			ArrayList<JunctionGraphEdge> edges = mst.primMST(matrix);
+			//System.out.println(edges);
+
+			JunctionGraph tree = new JunctionGraph();
+			tree.setNode(junctionGraph.get(i).node);
+			tree.setEdge(edges);
+
+			for (JunctionGraphEdge edge : edges) {
+				edge.common = tree.setCommonElements(edge.v1,edge.v2);
+			}
+
+			junctionTree.add(tree);
 		}
-
-
-		System.out.println(junctionGraph.get(0));
-
-		int[][] matrix = junctionGraph.get(0).toMatrix();
-
-		MST mst = new MST(junctionGraph.get(0).node.size());
-		ArrayList<JunctionGraphEdge> edges = mst.primMST(matrix);
-		System.out.println(edges);
 
     }
 
-    private static Set<Set<Integer>> getClusterGraph(int[][] matrix) {
+	private static void fillSkipPotentials(int[][] small_images, int[][] small_chars, Graph[] graph, int i, int t, Vertex[] vertices) {
+		for(int j=0;j<t;j++)
+        {
+            for(int k=j+1;k<t;k++)
+            {
+                if(j<strlengths[2*i])
+                {
+                    if(k<strlengths[2*i])
+                    {
+                        if(small_images[2*i][j]==small_images[2*i][k])
+                        {
+                            if(small_chars[2*i][j]==small_chars[2*i][k])
+                            {
+                                vertices[j].SkipPotential=5;
+                                vertices[k].SkipPotential=5;
+                                graph[i].addEdge(vertices[j], vertices[k]);
+                            }
+                            else
+                            {
+                                vertices[j].SkipPotential=1;
+                                vertices[k].SkipPotential=1;
+                                graph[i].addEdge(vertices[j], vertices[k]);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if(small_images[2*i][j]==small_images[2*i+1][k-strlengths[2*i]])
+                        {
+                            if(small_chars[2*i][j]==small_chars[2*i+1][k-strlengths[2*i]])
+                            {
+                                vertices[j].SkipPotential=5;
+                                vertices[k].SkipPotential=5;
+                                graph[i].addEdge(vertices[j], vertices[k]);
+                            }
+                            else
+                            {
+                                vertices[j].SkipPotential=1;
+                                vertices[k].SkipPotential=1;
+                                graph[i].addEdge(vertices[j], vertices[k]);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if(k<strlengths[2*i])
+                    {
+                        if(small_images[2*i+1][j-strlengths[2*i]]==small_images[2*i][k])
+                        {
+                            if(small_chars[2*i+1][j-strlengths[2*i]]==small_chars[2*i][k])
+                            {
+                                vertices[j].SkipPotential=5;
+                                vertices[k].SkipPotential=5;
+                                graph[i].addEdge(vertices[j], vertices[k]);
+                            }
+                            else
+                            {
+                                vertices[j].SkipPotential=1;
+                                vertices[k].SkipPotential=1;
+                                graph[i].addEdge(vertices[j], vertices[k]);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if(small_images[2*i+1][j-strlengths[2*i]]==small_images[2*i+1][k-strlengths[2*i]])
+                        {
+                            if(small_chars[2*i+1][j-strlengths[2*i]]==small_chars[2*i+1][k-strlengths[2*i]])
+                            {
+                                vertices[j].SkipPotential=5;
+                                vertices[k].SkipPotential=5;
+                                graph[i].addEdge(vertices[j], vertices[k]);
+                            }
+                            else
+                            {
+                                vertices[j].SkipPotential=1;
+                                vertices[k].SkipPotential=1;
+                                graph[i].addEdge(vertices[j], vertices[k]);
+                            }
+                        }
+                    }
+                }
+
+
+            }
+        }
+	}
+
+	private static Set<Set<Integer>> getClusterGraph(int[][] matrix) {
         Clique clique = new Clique(10+"",2);
         clique.setGraph(matrix);
         Set<Set<Integer>> result1 = new HashSet<>();

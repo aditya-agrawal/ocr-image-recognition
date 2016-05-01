@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 class MST
 {
-    private int V=7;
+    private int V;
 
     MST(int V){
         this.V = V;
@@ -67,6 +67,8 @@ class MST
         {
 
             int u = maxKey(key, mstSet);
+            if (u == -1)
+                return printMST(parent, V, graph);
 
             mstSet[u] = true;
 

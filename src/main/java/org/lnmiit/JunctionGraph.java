@@ -10,6 +10,10 @@ public class JunctionGraph {
     Map<Integer,Set<Integer>> node;
     List<JunctionGraphEdge> edge;
 
+    JunctionGraph(){
+
+    }
+
     JunctionGraph(Set<Set<Integer>> cliques){
         node = new HashMap<>();
         int i = 0;
@@ -17,6 +21,22 @@ public class JunctionGraph {
             node.put(i++,clique);
         }
         edge = addEdges();
+    }
+
+    public Map<Integer, Set<Integer>> getNode() {
+        return node;
+    }
+
+    public void setNode(Map<Integer, Set<Integer>> node) {
+        this.node = node;
+    }
+
+    public List<JunctionGraphEdge> getEdge() {
+        return edge;
+    }
+
+    public void setEdge(List<JunctionGraphEdge> edge) {
+        this.edge = edge;
     }
 
     private List<JunctionGraphEdge> addEdges() {
@@ -58,5 +78,14 @@ public class JunctionGraph {
             matrix[e.v2][e.v1] = e.weight; });
 
         return matrix;
+    }
+
+    public List<Integer> setCommonElements(Integer v1, Integer v2) {
+        Set<Integer> set1 = node.get(v1);
+        Set<Integer> set2 = node.get(v2);
+
+        List<Integer> list = findIntersection(set1,set2);
+
+        return list;
     }
 }
