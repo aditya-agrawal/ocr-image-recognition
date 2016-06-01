@@ -34,8 +34,8 @@ class MST
         ArrayList<JunctionGraphEdge> edges = new ArrayList<>();
 
         for (int i = 1; i < V; i++){
-         /**   System.out.println(parent[i]+" - "+ i+"    "+
-                    graph[i][parent[i]]);*/
+          //  System.out.println(parent[i]+" - "+ i+"    "+
+           //         graph[i][parent[i]]);
 
             JunctionGraphEdge junctionGraphEdge= new JunctionGraphEdge(parent[i],i,graph[i][parent[i]]);
             edges.add(junctionGraphEdge);

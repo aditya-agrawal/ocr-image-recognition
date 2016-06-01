@@ -1,6 +1,5 @@
 package org.lnmiit;
 
-import java.io.*;
 import java.util.*;
 
 /**
@@ -194,116 +193,6 @@ public class Clique {
         }
         System.out.println();
     }
-
-    /**
-     * Top-level function which creates an instance of 'CliqueBT' class and
-     * invokes its methods to find k-cliques in graphs.
-     * strings of graph representation - total number of vertices
-     *             followed by pairs of vertices which indicate edges.
-     * @throws IOException
-     */
-//    public static void main(String[] args) throws IOException {
-//     /* System.out.println(" Enter a positive integer 'n' followed by " +
-//      		"some number of pairs of integers\n in the range 0 to n-1." +
-//      		" 'N' represents the number of vertices in the graph,\n and each " +
-//      		"pair u v represents an edge between vertices u and v."+
-//      		"\n\n Input Note : The first line MUST contain ONLY the number of vertices."+
-//      		" Then,\n\t      a pair of vertices seperated by space can follow from "+
-//      		"the\n\t      second line. And, ONLY ONE of any duplicate edges such"+
-//      		" as\n\t      (u,v) and (v,u) should be entered.");
-//      System.out.println(" Input Example : A graph of 5 vertices and e(0,1), "+
-//            "e(0,3), e(1,2),...,e(3,4)\n\t\t should have an input as shown below.");
-//      System.out.println("\t\t 5");     System.out.println("\t\t 0 1");
-//      System.out.println("\t\t 0 3");   System.out.println("\t\t 1 2");
-//      System.out.println("\t\t 1 4");   System.out.println("\t\t 2 3");
-//      System.out.println("\t\t 2 4");   System.out.println("\t\t 3 4");
-//      System.out.print("\nEnter a string representaion of a graph.\n" + "=> ");
-//*/
-//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//        //String firstLine = br.readLine();  // 1st line contains only # of vertices
-//        String firstLine = args[0];
-//        StringTokenizer token = new StringTokenizer(firstLine);
-//        String numNodes = token.nextToken();
-//        // Create an instance with given number of nodes in a graph
-//
-////firstLine = br.readLine();
-//        firstLine = args[1];
-//        token = new StringTokenizer(firstLine);
-//        String numNodes1 = token.nextToken();
-//        totalnodes=Integer.parseInt(numNodes1);
-//        System.out.println("total here "+totalnodes+" ");
-//        int size=Integer.parseInt(numNodes);
-//        System.out.println(numNodes1+"--"+size);
-//        Clique cliqueBT = new Clique(numNodes1,size);
-//
-//
-//        try{
-//            //  genSynNtwrk();
-//            br = new BufferedReader(new FileReader("netscience.txt"));
-//            String str=new String();
-//            String str2=new String();
-//
-//            int term=0;
-//            String[] terms=new String[3];
-//            //keep reading till the end
-//            while (!(str=br.readLine()).contentEquals("END OF INPUT")) {
-//                term=0;
-//                StringTokenizer Tok = new StringTokenizer(str);
-//                while(Tok.hasMoreTokens()){
-//                    str2=Tok.nextToken();
-//                    terms[term]=str2;
-//                    term++;
-//                }
-//                // connect(Integer.parseInt(terms[0]),Integer.parseInt(terms[1]));
-//                cliqueBT.addEdge(terms[0], terms[1]);
-//
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//
-//
-//
-//
-//        }
-//
-//
-//     /* cliqueBT.addEdge("0","1");  // add edge to a graph
-//        cliqueBT.addEdge("0","3");  // add edge to a graph
-//        cliqueBT.addEdge("1","2");  // add edge to a graph
-//        cliqueBT.addEdge("1","4");  // add edge to a graph
-//        cliqueBT.addEdge("2","3");  // add edge to a graph
-//        cliqueBT.addEdge("2","4");  // add edge to a graph
-//        cliqueBT.addEdge("3","4");  // add edge to a graph
-//       cliqueBT.addEdge("3","1");  // add edge to a graph
-//        cliqueBT.addEdge("1","5");  // add edge to a graph
-//        cliqueBT.addEdge("2", "5");
-//      //  cliqueBT.addEdge("2", "6");
-//     cliqueBT.addEdge("2", "6");
-//     cliqueBT.addEdge("6", "5");
-//    // cliqueBT.addEdge("2", "8");
-//    // cliqueBT.addEdge("8", "1");
-//    // cliqueBT.addEdge("8", "5");
-//*/
-//        // Read all edges in the form of pairs of vertices
-//
-//
-//        // Stamp the starting time of the algorithm.
-//        long time1 = System.currentTimeMillis();
-//
-//        // Perform backtracking for clique with initially empty solution
-//        cliqueBT.doCliqueBT(new Vector(), 0 ,null);
-//
-//        // Stamp the ending time of the algorithm.
-//        long time2 = System.currentTimeMillis();
-//
-//        // Determine running time of DFS
-//        long elapse = time2 - time1;
-//
-//        System.out.println("\n  Running Time of the algorithm : "+(long)elapse+" ms.");
-//        //   cliqueBT.showResult();  // show results of the backtracking for clique
-//    }
 
     public int[][] getGraph() {
         return graph;

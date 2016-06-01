@@ -63,13 +63,16 @@ public class GraphicalModel {
 			//TRIANGULATION
 
 			Trangulation.doTriangulation(small_images, graph, i, t, vertices);
+
+
             int[][] matrix = GraphMatrix.getGraphmatrix(graph[i]);
             clusters.add(getClusterGraph(matrix));
 			junctionGraph.add(new JunctionGraph(clusters.get(i)));
 
+
 			matrix = junctionGraph.get(i).toMatrix();
 			MST mst = new MST(junctionGraph.get(i).node.size());
-			ArrayList<JunctionGraphEdge> edges = mst.primMST(matrix);
+			ArrayList<JunctionGraphEdge> edges= mst.primMST(matrix);
 			//System.out.println(edges);
 
 			JunctionGraph tree = new JunctionGraph();
@@ -83,6 +86,14 @@ public class GraphicalModel {
 			junctionTree.add(tree);
 		}
 
+        System.out.println("Triangulation   "+graph[0]);
+        System.out.println("clusters    " + clusters.get(0));
+		System.out.println("Junction Graph  " + junctionGraph.get(0));
+		int[][] matrix = junctionGraph.get(0).toMatrix();
+		MST mst = new MST(junctionGraph.get(0).node.size());
+		ArrayList<JunctionGraphEdge> edges= mst.primMST(matrix);
+		//System.out.println(edges);
+		System.out.println("Junction Tree "+ junctionTree.get(0));
     }
 
 	private static void fillSkipPotentials(int[][] small_images, int[][] small_chars, Graph[] graph, int i, int t, Vertex[] vertices) {
