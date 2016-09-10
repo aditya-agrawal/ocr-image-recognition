@@ -181,6 +181,11 @@ public class Graph {
         return new HashSet<Edge>(this.edges.values());
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Graph{" +
+                "vertices=" + vertices +
+                ", edges=" + edges +
+                '}';
+    }
 }
