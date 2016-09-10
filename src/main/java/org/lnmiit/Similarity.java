@@ -37,7 +37,7 @@ public class Similarity {
 		char ch2;
 		int same = 0;
 		int total = 0;
-		while ((eofmarker = br1.read())!=-1) {
+		while (-1 != (eofmarker = br1.read())) {
 			ch1 = (char) eofmarker;
 			ch2 = (char) br2.read();
 			if (ch1 != '\n') {

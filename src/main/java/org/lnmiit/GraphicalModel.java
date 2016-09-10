@@ -35,7 +35,7 @@ public class GraphicalModel {
 				 vertices[j].OCRPotential=ocrpotentials[small_images[2*i][j]][small_chars[2*i][j]];
 				 else
 			     vertices[j].OCRPotential=ocrpotentials[small_images[2*i+1][j-strlengths[2*i]]][small_chars[2*i+1][j-strlengths[2*i]]];
-				 if(j!=0 && j!=strlengths[2*i])
+				 if(0 != j && j!=strlengths[2*i])
 				 {
 					     if(j<strlengths[2*i])
 						 vertices[j].TransPotential=transpotentials[small_chars[2*i][j-1]][small_chars[2*i][j]];

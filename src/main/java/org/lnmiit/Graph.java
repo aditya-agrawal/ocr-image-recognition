@@ -84,7 +84,7 @@ public class Graph {
      * @return true iff this Graph contains the Edge e
      */
     public boolean containsEdge(Edge e){
-        if(e.getOne() == null || e.getTwo() == null){
+        if(null == e.getOne() || null == e.getTwo()){
             return false;
         }
 
@@ -111,7 +111,7 @@ public class Graph {
      * @return true iff this Graph contains vertex
      */
     public boolean containsVertex(Vertex vertex){
-        return this.vertices.get(vertex.getLabel()) != null;
+        return null != this.vertices.get(vertex.getLabel());
     }
 
     /**
@@ -135,12 +135,12 @@ public class Graph {
      */
     public boolean addVertex(Vertex vertex, boolean overwriteExisting){
         Vertex current = this.vertices.get(vertex.getLabel());
-        if(current != null){
+        if(null != current){
             if(!overwriteExisting){
                 return false;
             }
 
-            while(current.getNeighborCount() > 0){
+            while(0 < current.getNeighborCount()){
                 this.removeEdge(current.getNeighbor(0));
             }
         }
@@ -158,7 +158,7 @@ public class Graph {
     public Vertex removeVertex(String label){
         Vertex v = vertices.remove(label);
 
-        while(v.getNeighborCount() > 0){
+        while(0 < v.getNeighborCount()){
             this.removeEdge(v.getNeighbor((0)));
         }
 

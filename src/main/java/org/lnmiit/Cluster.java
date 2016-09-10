@@ -18,7 +18,7 @@ public class Cluster {
         return common;
     }
 
-    public void setCommon(Vertex common) {
+    private void setCommon(Vertex common) {
         this.common = common;
     }
 
@@ -26,11 +26,11 @@ public class Cluster {
         return vertices;
     }
 
-    public void setVertices(HashSet<Vertex> vertices) {
+    private void setVertices(HashSet<Vertex> vertices) {
         this.vertices = vertices;
     }
 
-    public static final class Builder {
+    private static final class Builder {
         private Vertex common;
         private HashSet<Vertex> vertices;
 

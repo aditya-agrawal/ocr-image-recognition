@@ -22,7 +22,7 @@ package org.lnmiit;
 	     * @param weight The weight of this Edge
 	     */
 	    public Edge(Vertex one, Vertex two, int weight){
-	        this.one = (one.getLabel().compareTo(two.getLabel()) <= 0) ? one : two;
+	        this.one = (0 >= one.getLabel().compareTo(two.getLabel())) ? one : two;
 	        this.two = (this.one == one) ? two : one;
 	        this.weight = weight;
 	    }
